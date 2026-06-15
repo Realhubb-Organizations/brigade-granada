@@ -3,4 +3,4 @@ Allow: /
 Disallow: /scratch/
 Disallow: /private/
 
-Sitemap: https://brigadegranadabangalore.in/sitemap.xml
+Sitemap: https://granada.brigade-projects.in/sitemap.xml
