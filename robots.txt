@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /scratch/
+Disallow: /private/
+
+Sitemap: https://brigadegranadabangalore.in/sitemap.xml
