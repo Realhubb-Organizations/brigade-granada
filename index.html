@@ -209,32 +209,30 @@
     }
     .loc-sub span.brand { color: #8B6A2E; font-weight: 600; }
 
-    .loc-cards-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
-      width: 100%; margin-bottom: 32px;
+    /* Location Carousel Styles */
+    .loc-tab-btn {
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.65);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
     }
-    .loc-card {
-      position: relative; overflow: hidden;
-      background: rgba(10, 15, 21, 0.7); color: #FFFFFF;
-      border-radius: 20px; padding: 0;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
-      display: flex; flex-direction: column; text-align: left;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .loc-tab-btn:hover {
+      color: #FFFFFF;
+      border-color: rgba(199, 152, 40, 0.5);
+      background: rgba(255, 255, 255, 0.08);
     }
-    .loc-card:hover {
-      transform: translateY(-4px); box-shadow: 0 18px 45px rgba(255, 255, 255, 0.08);
+    .loc-tab-btn.active {
+      background: linear-gradient(135deg, #A5824C 0%, #6A4F1E 100%);
+      color: #FFFFFF;
+      border-color: #A5824C;
+      box-shadow: 0 6px 20px rgba(199, 152, 40, 0.35);
     }
-    .loc-card-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background-size: cover; background-position: center;
-      filter: blur(10px) brightness(0.35);
-      transform: scale(1.1);
-      transition: transform 0.5s ease;
+    .loc-slide-panel {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
     }
-    .loc-card:hover .loc-card-bg {
-      transform: scale(1.15);
-    }
+
     .loc-card-content {
       position: relative; z-index: 1;
       padding: 32px 20px;
@@ -251,9 +249,9 @@
 
     .loc-compass-grid {
       display: grid;
-      grid-template-columns: 1.2fr 100px 1.2fr;
-      grid-template-rows: auto 100px auto;
-      gap: 20px 16px;
+      grid-template-columns: 1.5fr 140px 1.5fr;
+      grid-template-rows: auto 140px auto;
+      gap: 32px 24px;
       align-items: center;
       width: 100%;
       margin-top: 15px;
@@ -263,7 +261,7 @@
       position: relative; display: flex; align-items: center; justify-content: center;
     }
     .loc-circle-wrap {
-      position: relative; width: 92px; height: 92px; z-index: 2;
+      position: relative; width: 130px; height: 130px; z-index: 2;
       display: flex; align-items: center; justify-content: center;
     }
     .loc-circle-img {
@@ -273,12 +271,12 @@
     }
     
     .loc-center-circle-area::before {
-      content: ''; position: absolute; left: -110px; right: -110px; top: 50%;
+      content: ''; position: absolute; left: -200px; right: -200px; top: 50%;
       border-top: 2px dotted rgba(199, 152, 40, 0.55); z-index: 1;
       transform: translateY(-50%);
     }
     .loc-center-circle-area::after {
-      content: ''; position: absolute; top: -20px; bottom: -20px; left: 50%;
+      content: ''; position: absolute; top: -30px; bottom: -30px; left: 50%;
       border-left: 2px dotted rgba(199, 152, 40, 0.55); z-index: 1;
       transform: translateX(-50%);
     }
@@ -287,10 +285,10 @@
       display: flex; flex-direction: column; gap: 4px;
     }
     .loc-pointer-item .dest-name {
-      font-size: 11.5px; font-weight: 600; color: #FFFFFF; line-height: 1.35;
+      font-size: 14.5px; font-weight: 600; color: #FFFFFF; line-height: 1.35;
     }
     .loc-pointer-item .dest-meta {
-      font-size: 10px; color: #F0D7A3; font-weight: 700;
+      font-size: 12px; color: #F0D7A3; font-weight: 700;
     }
     
     .loc-pointer-item.pos-left-top { grid-column: 1; grid-row: 1; text-align: right; }
@@ -1191,19 +1189,30 @@
         The <span class="brand">Brigade Granada</span> location places residents at the centre of East Bangalore's most sought-after employment, residential and infrastructure corridor.
       </p>
 
-      <!-- Unified Location Card -->
-      <div class="w-full max-w-6xl mx-auto rounded-[32px] bg-gradient-to-br from-[#0b0f15]/95 via-[#00274D]/95 to-[#000e1e]/98 border-2 border-gold/30 p-8 md:p-10 shadow-2xl relative overflow-hidden transition-all duration-300 hover:border-gold">
+      <!-- Unified Location Card (Carousel Slider) -->
+      <div class="w-full max-w-4xl mx-auto rounded-[32px] bg-gradient-to-br from-[#0b0f15]/95 via-[#00274D]/95 to-[#000e1e]/98 border-2 border-gold/30 p-8 md:p-12 shadow-2xl relative overflow-hidden transition-all duration-300 hover:border-gold">
         <!-- Background Glows -->
         <div class="absolute -top-40 -left-40 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
         
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 relative z-10">
+        <!-- Tab Switcher -->
+        <div class="flex flex-wrap items-center justify-center gap-3 md:gap-4 mb-10 relative z-10">
+          <button type="button" onclick="switchLocSlide(0)" class="loc-tab-btn active px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300">
+            ✈️ Connectivity
+          </button>
+          <button type="button" onclick="switchLocSlide(1)" class="loc-tab-btn px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300">
+            🏫 Education
+          </button>
+          <button type="button" onclick="switchLocSlide(2)" class="loc-tab-btn px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300">
+            🏥 Healthcare &amp; IT
+          </button>
+        </div>
+
+        <!-- Slides Wrapper -->
+        <div class="relative z-10 w-full min-h-[340px]">
           
-          <!-- Section 1: Connectivity -->
-          <div class="flex flex-col">
-            <div class="flex items-center justify-center gap-2.5 pb-4 mb-6 border-b border-white/10 text-gold font-heading font-semibold text-sm tracking-widest uppercase">
-              <span>✈️</span> CONNECTIVITY
-            </div>
+          <!-- Slide 0: Connectivity -->
+          <div class="loc-slide-panel transition-all duration-500 transform flex flex-col">
             <div class="loc-compass-grid">
               <!-- Top-Left -->
               <div class="loc-pointer-item pos-left-top">
@@ -1246,14 +1255,8 @@
             </div>
           </div>
 
-          <!-- Divider for desktop -->
-          <div class="hidden lg:block absolute left-1/3 top-8 bottom-8 w-[1px] bg-gradient-to-b from-transparent via-gold/20 to-transparent"></div>
-
-          <!-- Section 2: Education -->
-          <div class="flex flex-col">
-            <div class="flex items-center justify-center gap-2.5 pb-4 mb-6 border-b border-white/10 text-gold font-heading font-semibold text-sm tracking-widest uppercase">
-              <span>🏫</span> EDUCATION
-            </div>
+          <!-- Slide 1: Education -->
+          <div class="loc-slide-panel hidden opacity-0 transition-all duration-500 transform flex flex-col">
             <div class="loc-compass-grid">
               <!-- Top-Left -->
               <div class="loc-pointer-item pos-left-top">
@@ -1291,14 +1294,8 @@
             </div>
           </div>
 
-          <!-- Divider for desktop -->
-          <div class="hidden lg:block absolute left-2/3 top-8 bottom-8 w-[1px] bg-gradient-to-b from-transparent via-gold/20 to-transparent"></div>
-
-          <!-- Section 3: Healthcare & Lifestyle -->
-          <div class="flex flex-col">
-            <div class="flex items-center justify-center gap-2.5 pb-4 mb-6 border-b border-white/10 text-gold font-heading font-semibold text-sm tracking-widest uppercase">
-              <span>🏥</span> HEALTHCARE &amp; IT
-            </div>
+          <!-- Slide 2: Healthcare & IT -->
+          <div class="loc-slide-panel hidden opacity-0 transition-all duration-500 transform flex flex-col">
             <div class="loc-compass-grid">
               <!-- Top-Left -->
               <div class="loc-pointer-item pos-left-top">
@@ -1342,6 +1339,14 @@
           </div>
 
         </div>
+
+        <!-- Carousel Arrows (Desktop only) -->
+        <button type="button" onclick="prevLocSlide()" aria-label="Previous Slide" class="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/5 border border-white/10 hover:border-gold/50 hover:bg-white/10 items-center justify-center text-white/70 hover:text-white transition-all">
+          ❮
+        </button>
+        <button type="button" onclick="nextLocSlide()" aria-label="Next Slide" class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/5 border border-white/10 hover:border-gold/50 hover:bg-white/10 items-center justify-center text-white/70 hover:text-white transition-all">
+          ❯
+        </button>
       </div>
 
       <!-- Redesigned Upcoming Infrastructure Grid Section -->
@@ -2026,6 +2031,54 @@
         heroIndex = 0;
       });
     }
+
+    // Location Proximity Slider JS
+    let currentLocSlide = 0;
+    const locSlides = Array.from(document.querySelectorAll('.loc-slide-panel'));
+    const locTabs = Array.from(document.querySelectorAll('.loc-tab-btn'));
+    let locInterval;
+
+    function switchLocSlide(index) {
+      currentLocSlide = index;
+      locSlides.forEach((slide, idx) => {
+        if (idx === index) {
+          slide.classList.remove('hidden');
+          slide.classList.remove('opacity-0');
+          slide.classList.add('opacity-100');
+        } else {
+          slide.classList.add('hidden');
+          slide.classList.add('opacity-0');
+          slide.classList.remove('opacity-100');
+        }
+      });
+
+      locTabs.forEach((tab, idx) => {
+        if (idx === index) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+      
+      // Reset rotation interval
+      clearInterval(locInterval);
+      locInterval = setInterval(nextLocSlide, 7000);
+    }
+
+    function nextLocSlide() {
+      if (!locSlides.length) return;
+      let next = (currentLocSlide + 1) % locSlides.length;
+      switchLocSlide(next);
+    }
+
+    function prevLocSlide() {
+      if (!locSlides.length) return;
+      let prev = (currentLocSlide - 1 + locSlides.length) % locSlides.length;
+      switchLocSlide(prev);
+    }
+
+    // Initialize auto-rotation
+    locInterval = setInterval(nextLocSlide, 7000);
 
     // auto-open after 5s
     setTimeout(() => { if (modal.classList.contains('hidden') && chatbotWindow.classList.contains('hidden')) openModal('Get Exclusive Project Details'); }, 5000);
