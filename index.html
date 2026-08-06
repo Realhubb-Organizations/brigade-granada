@@ -1893,6 +1893,50 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    function getBrowserName() {
+      const ua = navigator.userAgent;
+      if (ua.includes("Chrome") && !ua.includes("Chromium") && !ua.includes("Edg")) return "Chrome";
+      if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
+      if (ua.includes("Firefox")) return "Firefox";
+      if (ua.includes("Edg")) return "Edge";
+      if (ua.includes("MSIE") || ua.includes("Trident")) return "Internet Explorer";
+      return "Unknown/Other";
+    }
+
+    function setupFormTracking() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const trackingParams = ['gclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term'];
+      
+      let hasTracking = false;
+      trackingParams.forEach(param => {
+        if (urlParams.has(param)) {
+          hasTracking = true;
+        }
+      });
+
+      if (hasTracking) {
+        trackingParams.forEach(param => {
+          localStorage.setItem(param, urlParams.get(param) || '');
+        });
+      } else {
+        trackingParams.forEach(param => {
+          if (localStorage.getItem(param) === null) {
+            localStorage.setItem(param, '');
+          }
+        });
+      }
+
+      if (!localStorage.getItem('landing_page_url')) {
+        localStorage.setItem('landing_page_url', window.location.href);
+      }
+    }
+
+    // Run tracking setup on load
+    window.addEventListener('DOMContentLoaded', setupFormTracking);
+    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+      setupFormTracking();
+    }
+
     // MOBILE NAV
     const mobileNav = document.getElementById('mobileNav');
     const mobileNavToggle = document.getElementById('mobileNavToggle');
@@ -1998,7 +2042,15 @@
         name: name,
         email: email,
         phone: phone,
-        source: source
+        source: source,
+        campaign: localStorage.getItem('utm_campaign') || '',
+        source_utm: localStorage.getItem('utm_source') || '',
+        utm_source: localStorage.getItem('utm_source') || '',
+        medium: localStorage.getItem('utm_medium') || '',
+        keyword: localStorage.getItem('utm_term') || '',
+        gclid: localStorage.getItem('gclid') || '',
+        landing_page: localStorage.getItem('landing_page_url') || window.location.href,
+        browser: getBrowserName()
       };
 
       submitToGoogleSheet(formData, form, () => {
@@ -2026,7 +2078,15 @@
         name: name,
         email: 'N/A',
         phone: phone,
-        source: source
+        source: source,
+        campaign: localStorage.getItem('utm_campaign') || '',
+        source_utm: localStorage.getItem('utm_source') || '',
+        utm_source: localStorage.getItem('utm_source') || '',
+        medium: localStorage.getItem('utm_medium') || '',
+        keyword: localStorage.getItem('utm_term') || '',
+        gclid: localStorage.getItem('gclid') || '',
+        landing_page: localStorage.getItem('landing_page_url') || window.location.href,
+        browser: getBrowserName()
       };
 
       submitToGoogleSheet(formData, form, () => {
